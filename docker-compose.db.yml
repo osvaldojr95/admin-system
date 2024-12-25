@@ -1,0 +1,21 @@
+version: '3'
+
+services:
+
+  essencials-db:
+    image: postgres:16
+    container_name: adminsystem-db
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_DB: db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 123
+      TZ: 'Etc/GMT+3'
+      PGTZ: 'Etc/GMT+3'
+    volumes:
+      - adminsystem-db-vol:/var/lib/postgresql/data
+      
+volumes:
+  adminsystem-db-vol:
+    driver: local

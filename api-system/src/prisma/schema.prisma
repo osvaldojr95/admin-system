@@ -1,0 +1,64 @@
+generator client {
+    provider = "prisma-client-js"
+    // binaryTargets = ["native", "linux-musl"]
+}
+
+datasource db {
+    provider = "postgres"
+    url      = env("DATABASE_URL")
+}
+
+model Config {
+    id          Int     @id @default(autoincrement())
+    key         String  @unique
+    value       String
+    description String?
+
+    @@map("configs")
+}
+
+model Customer {
+    id      Int    @id @default(autoincrement())
+    name    String
+    address String
+    city    String
+    state   String
+    cep     String
+    phone   String
+    cpf     String
+
+    appointments Appointment[]
+
+    @@map("customers")
+}
+
+model Appointment {
+    id          Int      @id @default(autoincrement())
+    name        String
+    customerId  Int
+    customer    Customer @relation(fields: [customerId], references: [id])
+    initialDate DateTime
+    endDate     DateTime
+
+    @@map("appointments")
+}
+
+model CustomerImport {
+    id           Int      @id @default(autoincrement())
+    date         DateTime
+    status       String
+    fileName     String
+    totalInserts Int?
+    totalErrors  Int?
+
+    @@map("customer_imports")
+}
+
+model Log {
+    id      Int      @id @default(autoincrement())
+    content String
+    key     String
+    date    DateTime
+
+    @@map("logs")
+}
