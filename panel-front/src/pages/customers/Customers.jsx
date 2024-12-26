@@ -6,13 +6,51 @@ import { setHeadcrumbs } from "../../context/sessionSlice";
 import Button from "../../components/layout/Button";
 import Grid from "../../components/layout/Grid";
 import Input from "../../components/layout/Input";
+import { getAllCustomers } from "../../services";
 
 const Customers = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [rows, setRows] = useState(null);
   const [search, setSearch] = useState("");
+  const columns = [
+    {
+      headername: "Nome",
+      field: "name",
+    },
+    {
+      headername: "Telefone",
+      field: "phone",
+    },
+    {
+      headername: "Endereço",
+      field: "address",
+    },
+    {
+      headername: "Cidade",
+      field: "city",
+    },
+    {
+      headername: "Estado",
+      field: "state",
+    },
+    {
+      headername: "CEP",
+      field: "cep",
+    },
+  ];
 
   useEffect(() => {
+    const loadCustomers = async () => {
+      try {
+        const customers = await getAllCustomers();
+        setRows(customers);
+      } catch (ex) {
+        localStorage.removeItem("token");
+        navigate("/");
+      }
+    };
+
     dispatch(
       setHeadcrumbs([
         {
@@ -20,6 +58,7 @@ const Customers = () => {
         },
       ])
     );
+    loadCustomers();
   }, []);
 
   return (
@@ -50,7 +89,7 @@ const Customers = () => {
         </div>
       </div>
       <div className="main">
-        <Grid />
+        <Grid columns={columns} rows={rows} />
       </div>
     </Paper>
   );

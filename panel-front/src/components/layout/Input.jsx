@@ -59,7 +59,7 @@ const InputField = styled.input`
   color: var(--secondary-color);
   padding: 0 15px;
   padding-left: ${(props) => (props.$search === "true" ? "40px" : "15px")};
-  cursor: pointer;
+  cursor: default;
   border-radius: 8px;
   border: 1px solid var(--light-gray-color);
   font-size: 16px;

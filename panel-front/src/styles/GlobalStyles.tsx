@@ -14,6 +14,7 @@ const GlobalStyle = createGlobalStyle`
         --bg-auth: #F9FAFB;
         --bg-dashboard: #e7e9ec;
         --light-gray-color: #c7cbd2;
+        --error-color: #f56565;
     }
     
     :root {

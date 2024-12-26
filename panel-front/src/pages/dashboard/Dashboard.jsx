@@ -52,20 +52,21 @@ const Dashboard = () => {
     <Paper gap={"10px"}>
       <div className="main">
         <Container>
-          {modules.map((m) => {
+          {modules.map((m, i) => {
             return (
               <Paper
                 width={"300px"}
                 height={"150px"}
                 hover={true}
                 onClick={() => navigate(m.nav)}
+                key={i}
               >
                 <div className="content">
                   <h3>{m.name}</h3>
                   <ul className="tabs">
-                    {m.tabs.map((t, i) => {
+                    {m.tabs.map((t, j) => {
                       return (
-                        <li key={i}>
+                        <li key={j}>
                           <a href={t.nav}>{t.name}</a>
                         </li>
                       );

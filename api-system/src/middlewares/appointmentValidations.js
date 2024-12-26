@@ -15,7 +15,6 @@ const appointmentSchema = Joi.object({
 
 export async function appointmentValidation(req, res, next) {
     const { name, initialDate, endDate, customerId } = req.body;
-    console.log({ name, initialDate, endDate, customerId })
 
     if (!name || !initialDate || !endDate || !customerId) {
         throw { text: "", status: 422 };

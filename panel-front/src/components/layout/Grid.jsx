@@ -14,26 +14,7 @@ const Grid = (props) => {
         headername: "Country",
       },
     ],
-    rows = [
-      {
-        id: 1,
-        record: [
-          {
-            key: "company",
-            value:
-              "Alfreds Futterkiste 123123123 12123 1212 31231 23 32312 311",
-          },
-          {
-            key: "contact",
-            value: "Maria And23 11231232123 123 12123 123 123123 1231 3ers",
-          },
-          {
-            key: "country",
-            value: "Reino U 123123 123 123 123nido",
-          },
-        ],
-      },
-    ],
+    rows = null,
   } = props;
   const [columnsSource, setColumnsSource] = useState(columns);
   const [rowsSource, setRowsSource] = useState(rows);
@@ -48,14 +29,21 @@ const Grid = (props) => {
   const paginationOptions = [10, 20, 50, 100];
 
   useEffect(() => {
+    if (rows === null) return;
+    setRowsSource(rows);
+  }, [rows]);
+
+  useEffect(() => {
     const autoSizeColumns = () => {
       let biggs = [];
       columnsSource.forEach((c, i) => {
         let bigger = c.headername;
-        for (let j = 0; j < rowsSource.length; j++) {
-          const row = rows[j].record[i].value;
-          if (row.length > bigger.length) {
-            bigger = row;
+        if (rowsSource && rowsSource?.length >= 0) {
+          for (let j = 0; j < rowsSource.length; j++) {
+            const row = rows[j][c.field];
+            if (row?.length > bigger.length) {
+              bigger = row;
+            }
           }
         }
         biggs.push(bigger);
@@ -63,7 +51,7 @@ const Grid = (props) => {
       setHeaderRef(biggs);
     };
     autoSizeColumns();
-  }, [columnsSource, rowsSource]);
+  }, [rowsSource]);
 
   useEffect(() => {
     if (columnsRefs.current.length > 0 && headerRef.length > 0) {
@@ -76,6 +64,7 @@ const Grid = (props) => {
 
   return (
     <Container>
+      <div className="bg-header" />
       <Table>
         <THead>
           <div className="tr">
@@ -87,7 +76,7 @@ const Grid = (props) => {
                       className="th-big"
                       ref={(el) => (columnsRefs.current[i] = el)}
                     >
-                      -{c}-
+                      --{c}--
                     </Cell>
                   );
                 })
@@ -101,14 +90,16 @@ const Grid = (props) => {
           </div>
         </THead>
         <TBody>
-          {rows.length > 0 ? (
-            rows.map((r, i) => {
+          {rowsSource === null ? (
+            <div className="no-content">Loading</div>
+          ) : rowsSource.length > 0 ? (
+            rowsSource.map((r, i) => {
               return (
                 <div className="tr" key={i}>
-                  {r.record.map((c, i) => {
+                  {columnsSource.map((c, i) => {
                     return (
                       <Cell key={i} width={`${headerSizes[i]}px`}>
-                        {c.value}
+                        {r[c.field] ?? "-"}
                       </Cell>
                     );
                   })}
@@ -124,7 +115,7 @@ const Grid = (props) => {
         <span>Total: 23</span>
         <div className="pags">
           <p>1</p>
-          <button>></button>
+          <button>{">"}</button>
         </div>
         <select
           value={pagination}
@@ -147,6 +138,19 @@ const Grid = (props) => {
 
 const Container = styled.div`
   height: 100%;
+  width: 100%;
+  position: relative;
+
+  .bg-header {
+    height: 44px;
+    width: 100%;
+    background-color: var(--secondary-light);
+    border-radius: 8px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1;
+  }
 `;
 const Table = styled.div`
   height: 80%;
@@ -157,6 +161,7 @@ const Table = styled.div`
   align-items: flex-start;
   flex-grow: 0;
   overflow-x: auto;
+  z-index: 3;
 `;
 const THead = styled.div`
   height: 44px;
@@ -170,6 +175,7 @@ const THead = styled.div`
   padding: 4px 20px;
   flex-grow: 1;
   flex-shrink: 0;
+  z-index: 3;
 
   .tr {
     width: 100%;
@@ -179,14 +185,18 @@ const THead = styled.div`
     align-items: center;
     gap: 10px;
   }
+
   .th-big {
     width: fit-content;
     white-space: nowrap;
     font-size: 16px;
     font-weight: bold;
+    color: var(--secondary-light);
   }
 `;
+
 const TBody = styled.div`
+  width: 100%;
   max-height: 70%;
   display: flex;
   flex-direction: column;
@@ -198,6 +208,7 @@ const TBody = styled.div`
 
   .tr {
     height: 40px;
+    min-width: 100%;
     display: flex;
     justify-content: flex-start;
     align-items: center;
@@ -212,6 +223,7 @@ const TBody = styled.div`
 
   .no-content {
     height: 100px;
+    width: 100%;
     display: flex;
     justify-content: center;
     align-items: center;

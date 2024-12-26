@@ -7,13 +7,39 @@ import { setHeadcrumbs } from "../../context/sessionSlice";
 import Button from "../../components/layout/Button";
 import Grid from "../../components/layout/Grid";
 import Input from "../../components/layout/Input";
+import { getAllAppointments } from "../../services";
 
 const Appointments = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [rows, setRows] = useState(null);
   const [search, setSearch] = useState("");
+  const columns = [
+    {
+      headername: "Nome",
+      field: "name",
+    },
+    {
+      headername: "Data/Hora Início",
+      field: "initialDate",
+    },
+    {
+      headername: "Data/Hora Fim",
+      field: "endDate",
+    },
+  ];
 
   useEffect(() => {
+    const loadAppointments = async () => {
+      try {
+        const appointments = await getAllAppointments();
+        setRows(appointments);
+      } catch (ex) {
+        localStorage.removeItem("token");
+        navigate("/");
+      }
+    };
+
     dispatch(
       setHeadcrumbs([
         {
@@ -21,13 +47,7 @@ const Appointments = () => {
         },
       ])
     );
-    dispatch(
-      setHeadcrumbs([
-        {
-          text: "Compromissos",
-        },
-      ])
-    );
+    loadAppointments();
   }, []);
 
   return (
@@ -50,7 +70,7 @@ const Appointments = () => {
         </div>
       </div>
       <div className="main">
-        <Grid />
+        <Grid columns={columns} rows={rows} />
       </div>
     </Paper>
   );

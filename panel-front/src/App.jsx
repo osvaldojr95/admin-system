@@ -11,7 +11,6 @@ import Home from "./pages/home/Home";
 import Dashboard from "./pages/dashboard/Dashboard";
 import Customers from "./pages/customers/Customers";
 import CustomerCreate from "./pages/customers/CustomerCreate";
-import CustomerEdit from "./pages/customers/CustomerEdit";
 import CustomersImport from "./pages/customers/CustomersImport";
 import Appointments from "./pages/appointments/Appointments";
 import AppointmentCreate from "./pages/appointments/AppointmentCreate";
@@ -36,7 +35,6 @@ const App = () => {
                 <Route path="dashboard" element={<Dashboard />} />
                 <Route path="customers/new" element={<CustomerCreate />} />
                 <Route path="customers/import" element={<CustomersImport />} />
-                <Route path="customers/:id/edit" element={<CustomerEdit />} />
                 <Route
                   path="appointments/new"
                   element={<AppointmentCreate />}
