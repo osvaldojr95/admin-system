@@ -64,10 +64,6 @@ const InputField = styled.input`
   border: 1px solid var(--light-gray-color);
   font-size: 16px;
 
-  &::placeholder {
-    color: var(--light-gray-color);
-  }
-
   &:focus {
     outline: 2px solid var(--main-color);
   }

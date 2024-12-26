@@ -65,6 +65,7 @@ const Container = styled.div`
     font-size: 22px;
     flex-grow: 0;
     user-select: none;
+    margin-bottom: 20px;
 
     .buttons {
       width: fit-content;

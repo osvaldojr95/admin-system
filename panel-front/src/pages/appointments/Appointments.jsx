@@ -22,10 +22,12 @@ const Appointments = () => {
     {
       headername: "Data/Hora Início",
       field: "initialDate",
+      type: "date",
     },
     {
       headername: "Data/Hora Fim",
       field: "endDate",
+      type: "date",
     },
   ];
 

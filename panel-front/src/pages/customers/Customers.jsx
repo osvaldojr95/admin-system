@@ -19,6 +19,10 @@ const Customers = () => {
       field: "name",
     },
     {
+      headername: "CPF",
+      field: "cpf",
+    },
+    {
       headername: "Telefone",
       field: "phone",
     },

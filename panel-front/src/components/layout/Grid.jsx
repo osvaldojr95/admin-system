@@ -1,3 +1,4 @@
+import moment from "moment";
 import { useRef, useState, useEffect } from "react";
 import styled from "styled-components";
 
@@ -99,7 +100,9 @@ const Grid = (props) => {
                   {columnsSource.map((c, i) => {
                     return (
                       <Cell key={i} width={`${headerSizes[i]}px`}>
-                        {r[c.field] ?? "-"}
+                        {c.type && c.type === "date"
+                          ? moment(r[c.field]).format("DD/MM/YYYY HH:mm")
+                          : r[c.field] ?? "-"}
                       </Cell>
                     );
                   })}

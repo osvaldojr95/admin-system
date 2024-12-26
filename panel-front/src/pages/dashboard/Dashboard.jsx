@@ -64,9 +64,9 @@ const Dashboard = () => {
                 <div className="content">
                   <h3>{m.name}</h3>
                   <ul className="tabs">
-                    {m.tabs.map((t, j) => {
+                    {m.tabs.map((t, i) => {
                       return (
-                        <li key={j}>
+                        <li key={i}>
                           <a href={t.nav}>{t.name}</a>
                         </li>
                       );

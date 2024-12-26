@@ -1,26 +1,12 @@
 import styled from "styled-components";
 import { useState } from "react";
-import Joi from "joi";
 import { useNavigate } from "react-router-dom";
 import Button from "../../components/layout/Button";
 import Paper from "../../components/layout/Paper";
 import Logo from "../../components/logo/Logo";
 import Input from "../../components/layout/Input";
 import { signIn } from "../../services";
-
-const authSchema = Joi.object({
-  email: Joi.string()
-    .email({ tlds: { allow: false } })
-    .required()
-    .messages({
-      "string.email": "Email inválido",
-      "any.required": "Email é obrigatório",
-    }),
-  password: Joi.string().min(3).required().messages({
-    "string.min": "Senha inválida",
-    "any.required": "Senha é obrigatória",
-  }),
-});
+import { validateAuth } from "../../utils/validate";
 
 const SignIn = () => {
   const [email, setEmail] = useState("");
@@ -28,25 +14,10 @@ const SignIn = () => {
   const navigate = useNavigate();
   const [error, setError] = useState({});
 
-  const validateForm = () => {
-    const validation = authSchema.validate(
-      { email, password },
-      { abortEarly: false }
-    );
-    if (validation.error) {
-      validation.error.details.forEach((e) => {
-        setError((prev) => ({ ...prev, [e.context.key]: e.message }));
-      });
-      return false;
-    }
-    return true;
-  };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const isValid = validateForm();
-      if (!isValid) return;
+      if (!validateAuth({ email, password }, setError)) return;
 
       const response = await signIn({ email, password });
       if (response === 401 || response === 422) {

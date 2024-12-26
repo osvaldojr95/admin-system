@@ -3,9 +3,11 @@ import Joi from "joi";
 const customerSchema = Joi.object({
     name: Joi.string()
         .trim()
+        .min(3)
         .regex(/^[A-ZÀ-Ú][a-zà-ú\s]/)
         .required()
         .messages({
+            "string.min": "Nome com formato inválido",
             "string.pattern.base": "Nome com formato inválido",
         }),
     address: Joi.string().required(),
