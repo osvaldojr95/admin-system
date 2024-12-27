@@ -21,21 +21,17 @@ export const customerSchema = Joi.object({
     }),
     city: Joi.string()
         .trim()
-        .regex(/^[A-Za-zÀ-ÿ\s]+$/)
         .required()
         .messages({
             "string.empty": "Cidade é obrigatória",
-            "string.pattern.base": "Cidade com formato inválido",
         }),
     state: Joi.string()
         .trim()
-        .regex(/^[A-Z]+$/)
-        .length(2)
+        .regex(/^[A-Za-zÀ-ÿ\s]+$/)
         .required()
         .messages({
-            "string.empty": "Estado é obrigatório",
-            "string.length": "Estado deve ter 2 caracteres",
-            "string.pattern.base": "Estado com formato inválido",
+            "string.empty": "Nome é obrigatório",
+            "string.pattern.base": "Nome com formato inválido",
         }),
     cep: Joi.string()
         .trim()

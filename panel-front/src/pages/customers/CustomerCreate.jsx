@@ -145,7 +145,7 @@ const CustomerCreate = () => {
               width="100%"
               value={state}
               onChange={(e) => {
-                setState(formatState(e));
+                setState(formatName(e));
                 if (error.state) setError((prev) => ({ ...prev, state: null }));
               }}
               autocomplete={"address-level1"}

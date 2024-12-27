@@ -15,11 +15,6 @@ export const formatPhone = (value) => {
         .replace(/(\d{4})(\d{4})$/, "$1-$2");
 };
 
-export const formatState = (value) => {
-    if (value.length > 2) value.subString(0, 2);
-    return value.replace(/[^a-zA-Z]/g, "").toUpperCase();
-};
-
 export const formatCep = (value) => {
     if (value.length > 9) value.subString(0, 9);
     return value
@@ -31,7 +26,7 @@ export const formatName = (value) => {
     if (!value || value?.length === 0) return "";
     const name = value.split(" ");
     return name.map((n) => {
-        if (n.toUpperCase() === "DE") return "de";
+        if (["DA", "DE", "DO", "DAS", "DOS"].includes(n.toUpperCase())) return n.toLowerCase();
         else
             return n[0].toUpperCase() + n.substring(1).toLowerCase();
     }).join(" ");
