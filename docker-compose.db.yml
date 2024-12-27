@@ -2,7 +2,7 @@ version: '3'
 
 services:
 
-  essencials-db:
+  adminsystem-db:
     image: postgres:16
     container_name: adminsystem-db
     ports:

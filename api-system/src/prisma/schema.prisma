@@ -25,7 +25,7 @@ model Customer {
     state   String
     cep     String
     phone   String
-    cpf     String
+    cpf     String @unique
 
     appointments Appointment[]
 

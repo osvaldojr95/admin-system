@@ -5,6 +5,9 @@ import { validateCustomer } from "../utils/validate.js";
 import { formatCustomer } from "../utils/formats.js";
 
 async function create(customer) {
+    const exist = await customerRepository.findByCpf(customer.cpf);
+    if (exist) throw { text: "CPF já cadastrado", status: 409 };
+
     await customerRepository.create(customer);
 }
 

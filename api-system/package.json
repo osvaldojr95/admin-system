@@ -5,10 +5,12 @@
   "main": "src/index.js",
   "type": "module",
   "prisma": {
-    "schema": "src/prisma/schema.prisma"
+    "seed": "cross-env DATABASE_URL=postgresql://postgres:123@localhost:5432/db node src/prisma/seed.js"
   },
   "scripts": {
     "dev": "DATABASE_URL=postgresql://postgres:123@localhost:5432/db PORT=5000 nodemon -L ./src/index.js",
+    "prisma:migrate": "DATABASE_URL=postgresql://postgres:123@localhost:5432/db prisma migrate dev",
+    "prisma:seed": "prisma db seed",
     "start": "node ./src/index.js"
   },
   "keywords": [],
@@ -29,6 +31,7 @@
     "uuid": "^8.3.2"
   },
   "devDependencies": {
+    "cross-env": "^7.0.3",
     "nodemon": "^2.0.20"
   }
 }
