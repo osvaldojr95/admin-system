@@ -1,5 +1,4 @@
 import multer from "multer";
-import path from "path";
 
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
@@ -13,7 +12,7 @@ const storage = multer.diskStorage({
 export const uploadMiddeware = multer({
     storage: storage,
     limits: {
-        fileSize: 1024 * 1024 * 10
+        fileSize: 1024 * 1024 * 100
     }
 })
     .single('file');

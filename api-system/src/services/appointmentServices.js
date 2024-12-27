@@ -6,7 +6,6 @@ async function create(appointment) {
     if (!customerExist) throw { text: "Cliente não encotrado", status: 404 };
 
     const conflictTimes = await appointmentRepository.verifyConflictTimes(appointment.initialDate, appointment.endDate);
-    console.log(conflictTimes);
     if (conflictTimes.length > 0) throw { text: "Horário de atendimento conflitante", status: 409 };
 
     await appointmentRepository.create(appointment);

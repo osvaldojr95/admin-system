@@ -28,10 +28,7 @@ const AppointmentsCreate = () => {
       try {
         const response = await getAllCustomers();
         setCustomers(response);
-      } catch (ex) {
-        localStorage.removeItem("token");
-        navigate("/");
-      }
+      } catch (ex) {}
     };
 
     dispatch(
@@ -58,7 +55,6 @@ const AppointmentsCreate = () => {
         initialTime: initialTime,
         endTime: endTime,
       };
-      console.log(appointment);
       if (!validateAppointment(appointment, setError)) return;
 
       const appointmentData = {
@@ -83,7 +79,6 @@ const AppointmentsCreate = () => {
       }
       navigate("/appointments");
     } catch (ex) {
-      console.log(ex);
       setError({
         request: "Erro desconhecido, tente novamente mais tarde!",
       });

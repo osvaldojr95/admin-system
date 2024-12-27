@@ -45,12 +45,12 @@ model Appointment {
 }
 
 model CustomerImport {
-    id           Int      @id @default(autoincrement())
-    date         DateTime
-    status       String
-    fileName     String
-    totalInserts Int?
-    totalErrors  Int?
+    id             Int       @id @default(autoincrement())
+    status         String
+    fileName       String
+    path           String
+    createdDate    DateTime  @default(now())
+    processingDate DateTime?
 
     @@map("customer_imports")
 }

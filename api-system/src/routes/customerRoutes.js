@@ -1,17 +1,15 @@
 import express from "express";
-import {
-  create,
-  listAll,
-  importFile,
-} from "../controllers/customerController.js";
+import customerController from "../controllers/customerController.js";
+import customerImportController from "../controllers/customerImportController.js";
 import { customerValidation } from "../middlewares/customerMiddleware.js";
 import { uploadMiddeware } from "../middlewares/uploadMiddleware.js";
 import { paginationValidadion } from "../middlewares/paginationMiddleware.js";
 
 const router = express.Router();
-router.get("/", paginationValidadion, listAll);
-router.post("/", customerValidation, create);
-router.post("/import", uploadMiddeware, importFile);
-
+router.get("/", customerController.listAll);
+router.get("/paginated", paginationValidadion, customerController.listAllPaginated);
+router.post("/", customerValidation, customerController.create);
+router.get("/import", customerImportController.listAll);
+router.post("/import", uploadMiddeware, customerImportController.importFile);
 
 export default router;

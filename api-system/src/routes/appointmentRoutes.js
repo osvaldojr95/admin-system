@@ -1,12 +1,9 @@
 import express from "express";
-import {
-  create,
-  listAll,
-} from "../controllers/appointmentController.js";
+import appointmentController from "../controllers/appointmentController.js";
 import { appointmentValidation } from "../middlewares/appointmentMiddleware.js";
 
 const router = express.Router();
-router.get("/", listAll);
-router.post("/", appointmentValidation, create);
+router.get("/", appointmentController.listAll);
+router.post("/", appointmentValidation, appointmentController.create);
 
 export default router;

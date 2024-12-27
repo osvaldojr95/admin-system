@@ -12,11 +12,23 @@ export const signIn = async (credentials) => {
 	};
 }
 
-export const getAllCustomers = async (pagination) => {
+export const getAllCustomersPaginated = async (pagination, search) => {
 	try {
-		// &search=${pagination.search}
-		const query = `page=${pagination.page}&pageSize=${pagination.pageSize}&orderBy=${pagination.orderBy}&order=${pagination.order}`;
-		const result = await axios.get(`${URL}/customers?${query}`, {
+		const query = `page=${pagination.page}&pageSize=${pagination.pageSize}&orderBy=${pagination.orderBy}&order=${pagination.order}&search=${search}`;
+		const result = await axios.get(`${URL}/customers/paginated?${query}`, {
+			headers: {
+				Authorization: `Bearer ${localStorage.getItem("token")}`,
+			}
+		});
+		return result.data;
+	} catch (ex) {
+		throw ex;
+	}
+};
+
+export const getAllCustomers = async () => {
+	try {
+		const result = await axios.get(`${URL}/customers`, {
 			headers: {
 				Authorization: `Bearer ${localStorage.getItem("token")}`,
 			}
@@ -75,6 +87,7 @@ export const importCustomers = async (file) => {
 		const result = await axios.post(`${URL}/customers/import`, formData, {
 			headers: {
 				"Content-Type": "multipart/form-data",
+				Authorization: `Bearer ${localStorage.getItem("token")}`,
 			},
 		});
 		return result.data;
@@ -82,3 +95,16 @@ export const importCustomers = async (file) => {
 		throw ex;
 	}
 }
+
+export const getAllImports = async () => {
+	try {
+		const result = await axios.get(`${URL}/customers/import`, {
+			headers: {
+				Authorization: `Bearer ${localStorage.getItem("token")}`,
+			}
+		});
+		return result.data;
+	} catch (ex) {
+		throw ex;
+	}
+};

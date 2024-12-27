@@ -64,7 +64,6 @@ const CustomerCreate = () => {
       }
       navigate("/customers");
     } catch (ex) {
-      console.log(ex);
       setError({
         request: "Erro desconhecido, tente novamente mais tarde!",
       });

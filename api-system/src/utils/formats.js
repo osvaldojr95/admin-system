@@ -28,7 +28,7 @@ export const formatName = (value) => {
     const name = value.split(" ");
     return name.reduce((acc, n) => {
         if (["DA", "DE", "DO", "DAS", "DOS"].includes(n.toUpperCase())) return acc + (acc.length > 0 ? " " : "") + n.toLowerCase();
-        else if (n.replace(".", "").toUpperCase() === "JR") return "Junior";
+        else if (n.replace(".", "").toUpperCase() === "JR") return acc + (acc.length > 0 ? " " : "") + "Junior";
         else if (n.includes(".")) return acc;
         else if (n.length === 1) return acc + (acc.length > 0 ? " " : "") + n.toUpperCase();
         else if (n.length > 1) {

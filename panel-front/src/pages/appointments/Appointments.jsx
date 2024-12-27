@@ -37,10 +37,7 @@ const Appointments = () => {
       const response = await getAllAppointments();
       setRows(response.appointments);
       setTotalCount(response.total);
-    } catch (ex) {
-      localStorage.removeItem("token");
-      navigate("/");
-    }
+    } catch (ex) {}
   };
 
   useEffect(() => {
@@ -59,12 +56,6 @@ const Appointments = () => {
       <div className="top">
         Lista de Compromissos
         <div className="buttons">
-          <Input
-            width="350px"
-            value={search}
-            onChange={setSearch}
-            search={true}
-          />
           <Button
             width="200px"
             text="Novo Compromisso"

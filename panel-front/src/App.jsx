@@ -33,10 +33,10 @@ const App = () => {
               </Route>
               <Route path="/" element={<DashboardLayout full={true} />}>
                 <Route path="dashboard" element={<Dashboard />} />
-                <Route path="customers/import" element={<CustomersImport />} />
               </Route>
               <Route path="/" element={<DashboardLayout />}>
                 <Route path="customers" element={<Customers />} />
+                <Route path="customers/import" element={<CustomersImport />} />
                 <Route path="customers/new" element={<CustomerCreate />} />
                 <Route path="appointments" element={<Appointments />} />
                 <Route

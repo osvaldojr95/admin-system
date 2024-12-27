@@ -6,7 +6,7 @@ import { setHeadcrumbs } from "../../context/sessionSlice";
 import Button from "../../components/layout/Button";
 import Grid from "../../components/layout/Grid";
 import Input from "../../components/layout/Input";
-import { getAllCustomers } from "../../services";
+import { getAllCustomersPaginated } from "../../services";
 
 const Customers = () => {
   const dispatch = useDispatch();
@@ -53,15 +53,12 @@ const Customers = () => {
     },
   ];
 
-  const loadCustomers = async (pagination) => {
+  const loadCustomers = async (pagination, searchText) => {
     try {
-      const response = await getAllCustomers(pagination);
+      const response = await getAllCustomersPaginated(pagination, searchText);
       setRows(response.customers);
       setTotalCount(response.total);
-    } catch (ex) {
-      localStorage.removeItem("token");
-      navigate("/");
-    }
+    } catch (ex) {}
   };
 
   useEffect(() => {
@@ -107,6 +104,7 @@ const Customers = () => {
           rows={rows}
           total={totalCount}
           loadData={loadCustomers}
+          search={search}
           paginationOn
           orderOn
         />

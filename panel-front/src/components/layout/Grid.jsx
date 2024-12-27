@@ -12,6 +12,7 @@ const Grid = (props) => {
     loadData = null,
     paginationOn = false,
     orderOn = false,
+    search = "",
   } = props;
   const [columnsSource, setColumnsSource] = useState(columns);
   const [rowsSource, setRowsSource] = useState(rows);
@@ -61,8 +62,8 @@ const Grid = (props) => {
   }, [headerRef]);
 
   useEffect(() => {
-    loadData && loadData(pagination);
-  }, [pagination]);
+    loadData && loadData(pagination, search);
+  }, [pagination, search]);
 
   return (
     <Container>
@@ -88,12 +89,6 @@ const Grid = (props) => {
                       key={i}
                       width={`${headerSizes[i]}px`}
                       onClick={() => {
-                        console.log(
-                          columnsSource.filter(
-                            (colSrc) =>
-                              colSrc.field === c.field && c.order === true
-                          )
-                        );
                         if (
                           orderOn &&
                           columnsSource.filter(
@@ -156,7 +151,7 @@ const Grid = (props) => {
         </TBody>
       </Table>
       <Pagination>
-        {total && <span>Total: {total}</span>}
+        {total != null && <span>Total: {total}</span>}
         {paginationOn && (
           <>
             <div className="pags">
@@ -170,7 +165,7 @@ const Grid = (props) => {
                 </button>
               )}
               <p>{pagination.page}</p>
-              {total && pagination.page * pagination.pageSize < total && (
+              {total !== 0 && total !== null && pagination.page * pagination.pageSize < total && (
                 <button
                   onClick={() => {
                     setPagination((prev) => ({ ...prev, page: prev.page + 1 }));
@@ -262,7 +257,7 @@ const THead = styled.div`
     font-weight: bold;
     color: var(--secondary-light);
   }
-  
+
   .order-icon {
     font-size: 14px;
     margin-left: 10px;

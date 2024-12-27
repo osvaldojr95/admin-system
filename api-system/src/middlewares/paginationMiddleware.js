@@ -12,10 +12,7 @@ export async function paginationValidadion(req, res, next) {
         }
     };
 
-    console.log(pagination);
-
     const { isValid, errors } = validatePagination(pagination);
-    console.log(errors);
     if (!isValid) {
         res.locals.body = {
             pagination: {
