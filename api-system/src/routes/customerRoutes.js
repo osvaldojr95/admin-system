@@ -6,9 +6,10 @@ import {
 } from "../controllers/customerController.js";
 import { customerValidation } from "../middlewares/customerMiddleware.js";
 import { uploadMiddeware } from "../middlewares/uploadMiddleware.js";
+import { paginationValidadion } from "../middlewares/paginationMiddleware.js";
 
 const router = express.Router();
-router.get("/", listAll);
+router.get("/", paginationValidadion, listAll);
 router.post("/", customerValidation, create);
 router.post("/import", uploadMiddeware, importFile);
 

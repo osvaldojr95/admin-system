@@ -7,7 +7,8 @@ export async function create(req, res) {
 }
 
 export async function listAll(req, res) {
-    const list = await customerServices.listAll();
+    const { pagination } = res.locals.body;
+    const list = await customerServices.listAll(pagination);
     return res.send(list);
 }
 

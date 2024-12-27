@@ -13,6 +13,7 @@ const Appointments = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [rows, setRows] = useState(null);
+  const [totalCount, setTotalCount] = useState(null);
   const [search, setSearch] = useState("");
   const columns = [
     {
@@ -31,17 +32,18 @@ const Appointments = () => {
     },
   ];
 
-  useEffect(() => {
-    const loadAppointments = async () => {
-      try {
-        const appointments = await getAllAppointments();
-        setRows(appointments);
-      } catch (ex) {
-        localStorage.removeItem("token");
-        navigate("/");
-      }
-    };
+  const loadAppointments = async () => {
+    try {
+      const response = await getAllAppointments();
+      setRows(response.appointments);
+      setTotalCount(response.total);
+    } catch (ex) {
+      localStorage.removeItem("token");
+      navigate("/");
+    }
+  };
 
+  useEffect(() => {
     dispatch(
       setHeadcrumbs([
         {
@@ -72,7 +74,7 @@ const Appointments = () => {
         </div>
       </div>
       <div className="main">
-        <Grid columns={columns} rows={rows} />
+        <Grid columns={columns} rows={rows} total={totalCount} />
       </div>
     </Paper>
   );

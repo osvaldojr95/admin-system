@@ -12,9 +12,11 @@ export const signIn = async (credentials) => {
 	};
 }
 
-export const getAllCustomers = async () => {
+export const getAllCustomers = async (pagination) => {
 	try {
-		const result = await axios.get(`${URL}/customers`, {
+		// &search=${pagination.search}
+		const query = `page=${pagination.page}&pageSize=${pagination.pageSize}&orderBy=${pagination.orderBy}&order=${pagination.order}`;
+		const result = await axios.get(`${URL}/customers?${query}`, {
 			headers: {
 				Authorization: `Bearer ${localStorage.getItem("token")}`,
 			}
@@ -34,6 +36,7 @@ export const createCustomer = async (customerData) => {
 		});
 		return result.data;
 	} catch (ex) {
+		if (ex.status === 409) return ex.status;
 		throw ex;
 	}
 };
@@ -60,6 +63,7 @@ export const createAppointment = async (appointmentData) => {
 		});
 		return result.data;
 	} catch (ex) {
+		if (ex.status === 404 || ex.status === 409) return ex.status;
 		throw ex;
 	}
 };

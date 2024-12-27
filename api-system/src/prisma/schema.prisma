@@ -18,14 +18,15 @@ model Config {
 }
 
 model Customer {
-    id      Int    @id @default(autoincrement())
-    name    String
-    address String
-    city    String
-    state   String
-    cep     String
-    phone   String
-    cpf     String @unique
+    id          Int      @id @default(autoincrement())
+    name        String
+    address     String
+    city        String
+    state       String
+    cep         String
+    phone       String
+    cpf         String   @unique
+    createdDate DateTime @default(now())
 
     appointments Appointment[]
 

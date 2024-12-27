@@ -34,7 +34,9 @@ async function verifyConflictTimes(initialDate, endDate) {
 }
 
 async function listAll() {
-    return await db.appointment.findMany()
+    const appointments = await db.appointment.findMany();
+    const total = await db.appointment.count();
+    return { appointments, total };
 }
 
 export default {

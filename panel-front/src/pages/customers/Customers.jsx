@@ -12,11 +12,13 @@ const Customers = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [rows, setRows] = useState(null);
+  const [totalCount, setTotalCount] = useState(null);
   const [search, setSearch] = useState("");
   const columns = [
     {
       headername: "Nome",
       field: "name",
+      order: true,
     },
     {
       headername: "CPF",
@@ -37,24 +39,32 @@ const Customers = () => {
     {
       headername: "Estado",
       field: "state",
+      order: true,
     },
     {
       headername: "CEP",
       field: "cep",
     },
+    {
+      headername: "Data Cadastro",
+      field: "createdDate",
+      type: "date",
+      order: true,
+    },
   ];
 
-  useEffect(() => {
-    const loadCustomers = async () => {
-      try {
-        const customers = await getAllCustomers();
-        setRows(customers);
-      } catch (ex) {
-        localStorage.removeItem("token");
-        navigate("/");
-      }
-    };
+  const loadCustomers = async (pagination) => {
+    try {
+      const response = await getAllCustomers(pagination);
+      setRows(response.customers);
+      setTotalCount(response.total);
+    } catch (ex) {
+      localStorage.removeItem("token");
+      navigate("/");
+    }
+  };
 
+  useEffect(() => {
     dispatch(
       setHeadcrumbs([
         {
@@ -62,7 +72,6 @@ const Customers = () => {
         },
       ])
     );
-    loadCustomers();
   }, []);
 
   return (
@@ -93,7 +102,14 @@ const Customers = () => {
         </div>
       </div>
       <div className="main">
-        <Grid columns={columns} rows={rows} />
+        <Grid
+          columns={columns}
+          rows={rows}
+          total={totalCount}
+          loadData={loadCustomers}
+          paginationOn
+          orderOn
+        />
       </div>
     </Paper>
   );

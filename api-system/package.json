@@ -5,6 +5,7 @@
   "main": "src/index.js",
   "type": "module",
   "prisma": {
+    "schema": "src/prisma/schema.prisma",
     "seed": "cross-env DATABASE_URL=postgresql://postgres:123@localhost:5432/db node src/prisma/seed.js"
   },
   "scripts": {

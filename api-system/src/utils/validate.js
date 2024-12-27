@@ -1,5 +1,5 @@
 import moment from "moment";
-import { appointmentSchema, authSchema, customerSchema } from "./schemas.js";
+import { appointmentSchema, authSchema, customerSchema, paginationSchema } from "./schemas.js";
 import { formatName } from "./formats.js";
 
 const states = [
@@ -49,6 +49,11 @@ export const validateAuth = (obj) => {
     let errors = {};
     const validateErrors = validateForm(authSchema, obj, errors);
     errors = { ...errors, ...validateErrors };
+    return { isValid: Object.keys(errors).length === 0, errors: errors };
+}
+
+export const validatePagination = (obj) => {
+    const errors = validateForm(paginationSchema, obj, {});
     return { isValid: Object.keys(errors).length === 0, errors: errors };
 }
 

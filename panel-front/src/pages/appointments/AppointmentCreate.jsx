@@ -73,7 +73,14 @@ const AppointmentsCreate = () => {
           "YYYY-MM-DD HH:mm:ss"
         ).toDate(),
       };
-      await createAppointment(appointmentData);
+      const response = await createAppointment(appointmentData);
+      if (response === 404) {
+        setError({ request: "Cliente não encotrado" });
+        return;
+      } else if (response === 409) {
+        setError({ request: "Horário de atendimento conflitante" });
+        return;
+      }
       navigate("/appointments");
     } catch (ex) {
       console.log(ex);

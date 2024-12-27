@@ -1,21 +1,17 @@
 import moment from "moment";
 import { useRef, useState, useEffect } from "react";
 import styled from "styled-components";
+import { FaSortAmountUpAlt } from "react-icons/fa";
+import { FaSortAmountDown } from "react-icons/fa";
 
 const Grid = (props) => {
   const {
-    columns = [
-      {
-        headername: "Company",
-      },
-      {
-        headername: "Contact",
-      },
-      {
-        headername: "Country",
-      },
-    ],
+    columns = [],
     rows = null,
+    total = null,
+    loadData = null,
+    paginationOn = false,
+    orderOn = false,
   } = props;
   const [columnsSource, setColumnsSource] = useState(columns);
   const [rowsSource, setRowsSource] = useState(rows);
@@ -24,10 +20,11 @@ const Grid = (props) => {
   const columnsRefs = useRef([]);
   const [pagination, setPagination] = useState({
     page: 1,
-    total: 0,
-    limit: 10,
+    pageSize: 10,
+    orderBy: "name",
+    order: "asc",
   });
-  const paginationOptions = [10, 20, 50, 100];
+  const paginationOptions = [10, 25, 50, 100];
 
   useEffect(() => {
     if (rows === null) return;
@@ -63,6 +60,10 @@ const Grid = (props) => {
     }
   }, [headerRef]);
 
+  useEffect(() => {
+    loadData && loadData(pagination);
+  }, [pagination]);
+
   return (
     <Container>
       <div className="bg-header" />
@@ -83,8 +84,46 @@ const Grid = (props) => {
                 })
               : columnsSource.map((c, i) => {
                   return (
-                    <HeaderCell key={i} width={`${headerSizes[i]}px`}>
+                    <HeaderCell
+                      key={i}
+                      width={`${headerSizes[i]}px`}
+                      onClick={() => {
+                        console.log(
+                          columnsSource.filter(
+                            (colSrc) =>
+                              colSrc.field === c.field && c.order === true
+                          )
+                        );
+                        if (
+                          orderOn &&
+                          columnsSource.filter(
+                            (colSrc) => colSrc.field === c.field && c.order
+                          ).length > 0
+                        ) {
+                          if (pagination.orderBy === c.field) {
+                            setPagination((prev) => ({
+                              ...prev,
+                              order: prev.order === "asc" ? "desc" : "asc",
+                            }));
+                          } else {
+                            setPagination((prev) => ({
+                              ...prev,
+                              orderBy: c.field,
+                              order: "asc",
+                            }));
+                          }
+                        }
+                      }}
+                    >
                       {c.headername}
+                      {orderOn &&
+                        c.order &&
+                        pagination.orderBy === c.field &&
+                        (pagination.order === "asc" ? (
+                          <FaSortAmountUpAlt className="order-icon" />
+                        ) : (
+                          <FaSortAmountDown className="order-icon" />
+                        ))}
                     </HeaderCell>
                   );
                 })}
@@ -101,7 +140,9 @@ const Grid = (props) => {
                     return (
                       <Cell key={i} width={`${headerSizes[i]}px`}>
                         {c.type && c.type === "date"
-                          ? moment(r[c.field]).format("DD/MM/YYYY HH:mm")
+                          ? r[c.field]
+                            ? moment(r[c.field]).format("DD/MM/YYYY HH:mm")
+                            : "-"
                           : r[c.field] ?? "-"}
                       </Cell>
                     );
@@ -115,25 +156,50 @@ const Grid = (props) => {
         </TBody>
       </Table>
       <Pagination>
-        <span>Total: 23</span>
-        <div className="pags">
-          <p>1</p>
-          <button>{">"}</button>
-        </div>
-        <select
-          value={pagination}
-          onChange={(e) => {
-            setPagination((prev) => ({ ...prev, limit: e.target.value }));
-          }}
-        >
-          {paginationOptions.map((o, i) => {
-            return (
-              <option key={i} value={o}>
-                {o}
-              </option>
-            );
-          })}
-        </select>
+        {total && <span>Total: {total}</span>}
+        {paginationOn && (
+          <>
+            <div className="pags">
+              {pagination.page > 1 && (
+                <button
+                  onClick={() => {
+                    setPagination((prev) => ({ ...prev, page: prev.page - 1 }));
+                  }}
+                >
+                  {"<"}
+                </button>
+              )}
+              <p>{pagination.page}</p>
+              {total && pagination.page * pagination.pageSize < total && (
+                <button
+                  onClick={() => {
+                    setPagination((prev) => ({ ...prev, page: prev.page + 1 }));
+                  }}
+                >
+                  {">"}
+                </button>
+              )}
+            </div>
+            <select
+              value={pagination.pageSize}
+              onChange={(e) => {
+                setPagination((prev) => ({
+                  ...prev,
+                  page: 1,
+                  pageSize: e.target.value,
+                }));
+              }}
+            >
+              {paginationOptions.map((o, i) => {
+                return (
+                  <option key={i} value={o}>
+                    {o}
+                  </option>
+                );
+              })}
+            </select>
+          </>
+        )}
       </Pagination>
     </Container>
   );
@@ -195,6 +261,12 @@ const THead = styled.div`
     font-size: 16px;
     font-weight: bold;
     color: var(--secondary-light);
+  }
+  
+  .order-icon {
+    font-size: 14px;
+    margin-left: 10px;
+    color: var(--main-color);
   }
 `;
 
@@ -264,6 +336,10 @@ const Pagination = styled.div`
   gap: 60px;
   margin-top: 10px;
   font-weight: bold;
+
+  &:focus {
+    outline: none;
+  }
 
   span {
     height: 100%;

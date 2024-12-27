@@ -57,6 +57,7 @@ export const validateCustomer = (obj, setError = null) => {
         setError && setError((prev) => ({ ...prev, cpf: "CPF inválido" }));
         noError = false;
     }
+    console.log(validateState(obj?.state));
     if (!validateState(obj?.state)) {
         setError && setError((prev) => ({ ...prev, state: "Estado inválido" }));
         noError = false;

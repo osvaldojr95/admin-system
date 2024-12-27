@@ -6,8 +6,19 @@ async function create(customer) {
     })
 }
 
-async function listAll() {
-    return await db.customer.findMany()
+async function listAll(pagination) {
+    const skip = (pagination.page - 1) * pagination.pageSize;
+    const take = pagination.pageSize;
+
+    const customers = await db.customer.findMany({
+        skip: skip,
+        take: take,
+        orderBy: {
+            [pagination.orderBy.name]: pagination.orderBy.direction
+        }
+    })
+    const total = await db.customer.count();
+    return { customers, total };
 }
 
 async function findByCpf(cpf) {
@@ -29,6 +40,6 @@ async function findById(customerId) {
 export default {
     create,
     listAll,
-    findByCpf, 
+    findByCpf,
     findById
 };

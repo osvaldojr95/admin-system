@@ -69,3 +69,12 @@ export const appointmentSchema = Joi.object({
     endDate: Joi.date().required(),
     customerId: Joi.number().integer().required(),
 });
+
+export const paginationSchema = Joi.object({
+    page: Joi.number().integer().required(),
+    pageSize: Joi.number().integer().required(),
+    orderBy: {
+        name: Joi.string().valid("name", "state", "createdDate"),
+        direction: Joi.string().valid("asc", "desc")
+    }
+});

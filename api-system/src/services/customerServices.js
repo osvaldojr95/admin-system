@@ -11,8 +11,8 @@ async function create(customer) {
     await customerRepository.create(customer);
 }
 
-async function listAll() {
-    return await customerRepository.listAll();
+async function listAll(pagination) {
+    return await customerRepository.listAll(pagination);
 }
 
 async function importFile(file) {

@@ -57,7 +57,11 @@ const CustomerCreate = () => {
       };
       if (!validateCustomer(customer, setError)) return;
 
-      await createCustomer(customer);
+      const response = await createCustomer(customer);
+      if (response === 409) {
+        setError({ request: "CPF já cadastrado" });
+        return;
+      }
       navigate("/customers");
     } catch (ex) {
       console.log(ex);
