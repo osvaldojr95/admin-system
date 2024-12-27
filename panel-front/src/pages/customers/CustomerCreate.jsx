@@ -10,8 +10,8 @@ import { validateCustomer } from "../../utils/validate";
 import {
   formatCpf,
   formatPhone,
-  formatState,
   formatCep,
+  formatCity,
   formatName,
 } from "../../utils/formats";
 import { createCustomer } from "../../services";
@@ -145,7 +145,7 @@ const CustomerCreate = () => {
               width="100%"
               value={state}
               onChange={(e) => {
-                setState(formatName(e));
+                setState(e);
                 if (error.state) setError((prev) => ({ ...prev, state: null }));
               }}
               autocomplete={"address-level1"}

@@ -7,6 +7,16 @@ export const formatCpf = (value) => {
         .replace(/(\d{3})(\d{2})$/, "$1-$2");
 };
 
+export const formatCity = (value) => {
+    if (!value || value?.length === 0) return "";
+    const name = value.split(" ");
+    return name.reduce((acc, n) => {
+        if (["DA", "DE", "DO", "DAS", "DOS"].includes(n.toUpperCase())) return acc + (acc.length > 0 ? " " : "") + n.toLowerCase();
+        else
+            return acc + (acc.length > 0 ? " " : "") + n[0].toUpperCase() + n.substring(1).toLowerCase();
+    }, "");
+};
+
 export const formatPhone = (value) => {
     if (value.length > 16) value.subString(0, 16);
     return value
