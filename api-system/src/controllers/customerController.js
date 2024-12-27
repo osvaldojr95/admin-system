@@ -3,14 +3,17 @@ import customerServices from "../services/customerServices.js";
 export async function create(req, res) {
     const { customer } = res.locals.body;
     await customerServices.create(customer);
-    res.sendStatus(201);
+    return res.sendStatus(201);
 }
 
 export async function listAll(req, res) {
     const list = await customerServices.listAll();
-    res.send(list);
+    return res.send(list);
 }
 
 export async function importFile(req, res) {
-    res.send("imported");
+    const { file } = req;
+    if (!file) return res.sendStatus(400);
+    await customerServices.importFile(file);
+    return res.sendStatus(201);
 }

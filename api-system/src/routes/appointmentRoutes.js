@@ -3,7 +3,7 @@ import {
   create,
   listAll,
 } from "../controllers/appointmentController.js";
-import { appointmentValidation } from "../middlewares/appointmentValidations.js";
+import { appointmentValidation } from "../middlewares/appointmentMiddleware.js";
 
 const router = express.Router();
 router.get("/", listAll);
