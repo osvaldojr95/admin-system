@@ -69,15 +69,15 @@ const Home = () => {
   return (
     <Container>
       <div className="sides infos">
-        <h2>Informações em tempo real</h2>
-        <h3>
+        <h2 className="tittle">Informações em tempo real</h2>
+        <h3 className="section">
           Número total de clientes: {data.totalCustomers ?? "Carregando..."}
         </h3>
-        <h3>
+        <h3 className="section">
           Número de clientes com telefone duplicado:{" "}
           {data.totalDuplicatedPhone ?? "Carregando..."}
         </h3>
-        <h3>
+        <h3 className="section">
           Quantidade de clientes por estado:{" "}
           {!data.totalCustomers ? "Carregando..." : ""}
         </h3>
@@ -117,7 +117,7 @@ const Container = styled.div`
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    gap: 20px;
+    gap: 10px;
   }
 
   .right {
@@ -145,6 +145,20 @@ const Container = styled.div`
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 10px;
+    margin-top: 10px;
+  }
+
+  .tittle {
+    font-size: 26px;
+    font-weight: 700;
+    font-style: italic;
+    color: var(--main-color);
+    margin-bottom: 20px;
+  }
+
+  .section {
+    font-size: 18px;
+    font-weight: 600;
   }
 `;
 

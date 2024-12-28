@@ -21,6 +21,10 @@ const Appointments = () => {
       field: "name",
     },
     {
+      headername: "Cliente",
+      field: "customerName",
+    },
+    {
       headername: "Data/Hora Início",
       field: "initialDate",
       type: "date",

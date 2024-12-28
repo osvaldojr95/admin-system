@@ -12,11 +12,7 @@ async function create(appointment) {
 }
 
 async function listAll() {
-    const result = await appointmentRepository.listAll();
-    return {
-        appointments: result.appointments.sort((a, b) => a.initialDate - b.initialDate),
-        total: result.total,
-    }
+    return await appointmentRepository.listAll();
 }
 
 export default {

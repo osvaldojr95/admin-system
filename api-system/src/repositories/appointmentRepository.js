@@ -34,7 +34,12 @@ async function verifyConflictTimes(initialDate, endDate) {
 }
 
 async function listAll() {
-    const appointments = await db.appointment.findMany();
+    const appointments = await db.$queryRawUnsafe(`
+        SELECT a.id, a.name, a."initialDate", a."endDate", c.name as "customerName"
+        FROM appointments a
+        JOIN customers c ON a."customerId" = c.id
+        ORDER BY a."initialDate" ASC;
+    `);
     const total = await db.appointment.count();
     return { appointments, total };
 }
