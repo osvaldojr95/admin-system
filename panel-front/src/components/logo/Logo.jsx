@@ -1,10 +1,18 @@
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 
-const Logo = ({ big = false }) => {
+const Logo = ({ big = false, white = false }) => {
   const navigate = useNavigate();
   return (
-    <Container size={big ? "45px" : "22px"} onClick={() => navigate("/")}>
+    <Container
+      size={big ? "45px" : "22px"}
+      $white={white}
+      onClick={() => {
+        const token = localStorage.getItem("token");
+        if (token) navigate("/dashboard");
+        else navigate("/");
+      }}
+    >
       <img src="/logo.png" alt="logo" size={big ? "40px" : "20px"} />
       AdminSystem
     </Container>
@@ -14,7 +22,7 @@ const Logo = ({ big = false }) => {
 const Container = styled.h1`
   font-size: ${(props) => props.size};
   font-weight: 700;
-  color: var(--main-color);
+  color: ${(props) => (props.$white ? "var(--bg-public)" : "var(--main-color)")};
   cursor: pointer;
   user-select: none;
   display: flex;

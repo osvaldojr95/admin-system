@@ -4,7 +4,7 @@ import customerImportServices from "../services/customerImportServices.js";
 export async function importCustomerConsumer() {
     try {
         const queueName = 'import-customers';
-        const connection = await amqp.connect('amqp://localhost');
+        const connection = await amqp.connect(process.env.QUEUE_URL);
         const channel = await connection.createChannel();
         await channel.assertQueue(queueName, { durable: true });
 

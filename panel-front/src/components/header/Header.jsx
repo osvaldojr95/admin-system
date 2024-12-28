@@ -25,23 +25,37 @@ const Header = ({ isExternal = false }) => {
     <Container $isexternal={isExternal.toString()}>
       <div className="header-size size-width-page">
         <Logo className="logo" />
-        <div className="buttons">
+        <div className="header-content">
           {isExternal ? (
             <Button
+              width={"150px"}
               text={"Entrar"}
               execute={() => navigate("/signin")}
               main={true}
             />
           ) : (
-            modules.map((m, i) => (
+            <>
+              <div className="buttons ">
+                {modules.map((m, i) => (
+                  <Button
+                    key={i}
+                    text={m.name}
+                    execute={() => navigate(m.nav)}
+                    fontSize={"16px"}
+                    bgColor={"var(--bg-public)"}
+                  />
+                ))}
+              </div>
               <Button
-                key={i}
-                text={m.name}
-                execute={() => navigate(m.nav)}
-                fontSize={"16px"}
-                bgColor={"var(--bg-public)"}
+                width={"150px"}
+                text={"Sair"}
+                execute={() => {
+                  localStorage.removeItem("token");
+                  navigate("/");
+                }}
+                main={true}
               />
-            ))
+            </>
           )}
         </div>
       </div>
@@ -67,11 +81,16 @@ const Container = styled.div`
     padding-top: 10px;
     padding-bottom: 10px;
     display: flex;
-    justify-content: space-between;
-    justify-content: ${(props) =>
-      props.$isexternal === "true" ? "space-between" : "flex-start"};
     align-items: center;
     gap: 40px;
+  }
+
+  .header-content {
+    width: 100%;
+    display: flex;
+    gap: 15px;
+    justify-content: ${(props) =>
+      props.$isexternal === "true" ? "flex-end" : "space-between" };
   }
 
   .buttons {

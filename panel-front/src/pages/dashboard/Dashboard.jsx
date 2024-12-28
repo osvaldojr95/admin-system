@@ -7,8 +7,8 @@ import { cleanHeadcrumbs } from "../../context/sessionSlice";
 
 const Dashboard = () => {
   const navigate = useNavigate();
-
   const dispatch = useDispatch();
+
   useEffect(() => {
     dispatch(cleanHeadcrumbs());
   }, []);

@@ -1,14 +1,24 @@
 import { PrismaClient } from '@prisma/client';
-
 const prisma = new PrismaClient();
 
 async function main() {
-    await prisma.config.createMany({
-        data: [
-            { key: 'email', value: 'admin@codental.com' },
-            { key: 'password', value: '123456' },
-        ],
+    const email = await prisma.config.findFirst({
+        where: { key: 'email' },
     });
+    if (!email) {
+        await prisma.config.create({
+            data: { key: 'email', value: 'admin@codental.com' },
+        });
+    }
+
+    const password = await prisma.config.findFirst({
+        where: { key: 'password' },
+    });
+    if (!password) {
+        await prisma.config.create({
+            data: { key: 'password', value: '123456' },
+        });
+    }
 
     console.log('Seed executado com sucesso!');
 }

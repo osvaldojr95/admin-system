@@ -4,7 +4,7 @@ import PageLayout from "./PageLayout";
 
 const PublicLayout = () => {
   return (
-    <PageLayout isExternal={true}>
+    <PageLayout isExternal={true} full={true}>
       <Outlet />
     </PageLayout>
   );

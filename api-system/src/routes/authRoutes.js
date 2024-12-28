@@ -1,7 +1,7 @@
 import express from "express";
 import {
   authValidate,
-} from "../middlewares/authMIddleware.js";
+} from "../middlewares/authMiddleware.js";
 import authController from "../controllers/authController.js";
 
 const router = express.Router();

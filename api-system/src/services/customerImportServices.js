@@ -14,7 +14,7 @@ async function addFileQueue(file) {
     const { id } = await customerImportRepository.createCustomerImport(file);
 
     const queueName = 'import-customers';
-    const connection = await amqp.connect('amqp://localhost');
+    const connection = await amqp.connect(process.env.QUEUE_URL);
     const channel = await connection.createChannel();
 
     await channel.assertQueue(queueName, { durable: true });
