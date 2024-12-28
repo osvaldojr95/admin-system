@@ -19,7 +19,7 @@ async function listAll(pagination, search) {
     return await customerRepository.listAll(pagination, search);
 }
 
-async function calculatePublicInfos() {
+async function calculatePublicInfos(sendToAll = true) {
     const totalCustomers = await customerRepository.totalCustomers();
     const totalDuplicatedPhone = await customerRepository.totalDuplicatedPhone();
     const totalCustomersPerStateDB = await customerRepository.totalCustomersPerState();
@@ -32,7 +32,10 @@ async function calculatePublicInfos() {
         };
     });
 
-    await send(wss, JSON.stringify({ totalCustomers, totalDuplicatedPhone, totalCustomersPerState }));
+    if (sendToAll)
+        await send(wss, JSON.stringify({ totalCustomers, totalDuplicatedPhone, totalCustomersPerState }));
+    else
+        return { totalCustomers, totalDuplicatedPhone, totalCustomersPerState };
 }
 
 export default {

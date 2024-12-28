@@ -1,7 +1,7 @@
 import { authSchema, customerSchema } from "./schemas";
 import moment from "moment";
 
-const states = [
+export const states = [
     "Acre",
     "Alagoas",
     "Amapá",
@@ -136,7 +136,7 @@ export const validateCPF = (value) => {
 }
 
 export const validateState = (value) => {
-    return states.includes(value);
+    return states.map(s => s.toLowerCase()).includes(value.toLowerCase());
 }
 
 export const validateTime = (value) => {

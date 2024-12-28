@@ -51,7 +51,7 @@ const CustomerCreate = () => {
         cpf,
         phone,
         city,
-        state,
+        state: formatCity(state),
         cep,
         address,
       };

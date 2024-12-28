@@ -1,0 +1,54 @@
+services:
+
+  adminsystem-db:
+    image: postgres:16
+    container_name: adminsystem-db
+    environment:
+      POSTGRES_DB: db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 123
+      TZ: 'Etc/GMT+3'
+      PGTZ: 'Etc/GMT+3'
+    volumes:
+      - adminsystem-db-vol:/var/lib/postgresql/data
+    networks:
+      - adminsystem-net
+
+  adminsystem-queue:
+    image: rabbitmq:management
+    container_name: adminsystem-queue
+    environment:
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest
+    networks:
+      - adminsystem-net
+
+  adminsystem-api:
+    container_name: adminsystem-api
+    build:
+      context: ./api-system
+      dockerfile: Dockerfile
+    depends_on:
+      - adminsystem-db
+      - adminsystem-queue
+    networks:
+      - adminsystem-net
+    restart: always
+
+  adminsystem-front:
+    container_name: adminsystem-front
+    build:
+      context: ./panel-front
+      dockerfile: Dockerfile
+    ports:
+      - 80:80
+    networks:
+      - adminsystem-net
+
+volumes:
+  adminsystem-db-vol:
+    driver: local
+
+networks:
+  adminsystem-net:
+    driver: bridge

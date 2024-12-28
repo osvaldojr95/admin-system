@@ -1,17 +1,22 @@
 import { WebSocketServer } from 'ws';
+import customerServices from "../services/customerServices.js";
 
 function onError(ws, err) {
     console.error(`onError: ${err.message}`);
 }
 
-function onMessage(ws, data) {
-    console.log(`onMessage: ${data}`);
+async function onMessage(ws, data) {
+    const message = data.toString();
+    if (message === 'getStats') {
+        const result = await customerServices.calculatePublicInfos(false);
+        ws.send(JSON.stringify(result));
+    }
 }
 
 export function send(wss, data) {
     wss.clients.forEach(client => {
-        if (client.readyState === 1) {  // Verifica se a conexão está aberta
-            client.send(data);  // Envia a mensagem para o cliente
+        if (client.readyState === 1) {
+            client.send(data);
         }
     });
 }

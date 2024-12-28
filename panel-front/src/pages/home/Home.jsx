@@ -3,10 +3,19 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Logo from "../../components/logo/Logo";
 import Button from "../../components/layout/Button";
+import { states } from "../../utils/validate.js";
 
 const Home = () => {
   const [ws, setWs] = useState(null);
   const navigate = useNavigate();
+  const [data, setData] = useState({
+    totalCustomers: null,
+    totalDuplicatedPhone: null,
+    totalCustomersPerState: states.map((state) => ({
+      state: state,
+      total: null,
+    })),
+  });
 
   useEffect(() => {
     const connectWebSocket = () => {
@@ -14,21 +23,22 @@ const Home = () => {
       const socket = new WebSocket(wsUrl);
 
       socket.onopen = () => {
-        console.log("WebSocket conectado");
+        socket.send("getStats");
       };
 
       socket.onmessage = (event) => {
         const message = event.data;
-        console.log("WebSocket message:", message);
-        // setMessages((prev) => [
-        //   ...prev,
-        //   {
-        //     id: Date.now(),
-        //     content: message,
-        //     timestamp: new Date().toLocaleTimeString(),
-        //     type: "received",
-        //   },
-        // ]);
+        const parsed = JSON.parse(message);
+        setData({
+          totalCustomers: parsed.totalCustomers,
+          totalDuplicatedPhone: parsed.totalDuplicatedPhone,
+          totalCustomersPerState: parsed.totalCustomersPerState.map(
+            (state) => ({
+              state: state.state,
+              total: state.total,
+            })
+          ),
+        });
       };
 
       socket.onerror = (error) => {
@@ -59,12 +69,27 @@ const Home = () => {
   return (
     <Container>
       <div className="sides infos">
-        <h2>Informações em tempo real: </h2>
-        <h3>Número total de clientes: </h3>
-        <h3>Número de clientes com telefone duplicado: </h3>
-        <h3>Quantidade de clientes por estado: </h3>
+        <h2>Informações em tempo real</h2>
+        <h3>
+          Número total de clientes: {data.totalCustomers ?? "Carregando..."}
+        </h3>
+        <h3>
+          Número de clientes com telefone duplicado:{" "}
+          {data.totalDuplicatedPhone ?? "Carregando..."}
+        </h3>
+        <h3>
+          Quantidade de clientes por estado:{" "}
+          {!data.totalCustomers ? "Carregando..." : ""}
+        </h3>
+        <ul className="states">
+          {data.totalCustomersPerState.map((state) => (
+            <li key={state.state}>
+              {state.state}: {state.total}
+            </li>
+          ))}
+        </ul>
       </div>
-      <div className="sides">
+      <div className="sides right">
         <div className="access">
           <Logo big white />
           <Button
@@ -83,12 +108,10 @@ const Container = styled.div`
   width: 100%;
   height: 100%;
   display: flex;
-  gap: 100px;
   justify-content: center;
   align-items: center;
 
   .sides {
-    width: 100%;
     height: 100%;
     display: flex;
     flex-direction: column;
@@ -97,7 +120,12 @@ const Container = styled.div`
     gap: 20px;
   }
 
+  .right {
+    width: 40%;
+  }
+
   .infos {
+    width: 60%;
     align-items: flex-start;
   }
 
@@ -110,6 +138,13 @@ const Container = styled.div`
     justify-content: center;
     align-items: center;
     gap: 50px;
+  }
+
+  .states {
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
   }
 `;
 

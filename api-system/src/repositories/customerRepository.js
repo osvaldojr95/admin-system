@@ -81,9 +81,10 @@ async function findById(customerId) {
 
 async function totalDuplicatedPhone() {
     const count = await db.$queryRawUnsafe(
-        `SELECT COUNT("phone") FROM "customers" GROUP BY "phone" HAVING COUNT("phone") > 1`
+        `SELECT "phone", COUNT("phone") FROM "customers" GROUP BY "phone" HAVING COUNT("phone") > 1`
     );
-    return Number(count[0].count.toString().replace(/\D/g, ''));
+    const total = count?.reduce((acc, curr) => acc + Number(curr.count.toString().replace(/\D/g, '')), 0);
+    return total;
 }
 
 async function totalCustomers() {
