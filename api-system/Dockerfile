@@ -6,4 +6,6 @@ COPY . /usr/src/
 
 RUN npm i
 
+RUN mkdir -p /usr/src/uploads
+
 CMD ["npm", "run", "docker:start"]

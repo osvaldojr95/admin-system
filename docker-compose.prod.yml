@@ -34,6 +34,8 @@ services:
     networks:
       - adminsystem-net
     restart: always
+    volumes:
+      - adminsystem-api-vol:/usr/src/uploads
 
   adminsystem-front:
     container_name: adminsystem-front
@@ -47,6 +49,8 @@ services:
 
 volumes:
   adminsystem-db-vol:
+    driver: local
+  adminsystem-api-vol:
     driver: local
 
 networks:
