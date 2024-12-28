@@ -16,7 +16,7 @@ services:
     volumes:
       - adminsystem-db-vol:/var/lib/postgresql/data
 
-  rabbitmq:
+  adminsystem-queue:
     image: rabbitmq:management
     container_name: rabbitmq
     ports:

@@ -2,7 +2,7 @@ import moment from "moment";
 import { appointmentSchema, authSchema, customerSchema, paginationSchema } from "./schemas.js";
 import { formatName } from "./formats.js";
 
-const states = [
+export const states = [
     "Acre",
     "Alagoas",
     "Amapá",

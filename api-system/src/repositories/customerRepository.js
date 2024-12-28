@@ -79,10 +79,33 @@ async function findById(customerId) {
     });
 }
 
+async function totalDuplicatedPhone() {
+    const count = await db.$queryRawUnsafe(
+        `SELECT COUNT("phone") FROM "customers" GROUP BY "phone" HAVING COUNT("phone") > 1`
+    );
+    return Number(count[0].count.toString().replace(/\D/g, ''));
+}
+
+async function totalCustomers() {
+    return await db.customer.count({});
+}
+
+async function totalCustomersPerState() {
+    return await db.customer.groupBy({
+        by: ["state"],
+        _count: {
+            _all: true
+        }
+    });
+}
+
 export default {
     create,
     listAll,
     listAllPaginated,
     findByCpf,
-    findById
+    findById,
+    totalDuplicatedPhone,
+    totalCustomers,
+    totalCustomersPerState
 };

@@ -1,5 +1,6 @@
 import amqp from "amqplib";
 import customerImportServices from "../services/customerImportServices.js";
+import customerServices from "../services/customerServices.js";
 
 export async function importCustomerConsumer() {
     try {
@@ -13,6 +14,7 @@ export async function importCustomerConsumer() {
                 const messageContent = msg.content.toString();
                 const parsed = JSON.parse(messageContent);
                 await customerImportServices.importFile(parsed.id, parsed.path);
+                await customerServices.calculatePublicInfos();
                 channel.ack(msg);
             }
         });

@@ -6,7 +6,14 @@ function onError(ws, err) {
 
 function onMessage(ws, data) {
     console.log(`onMessage: ${data}`);
-    ws.send(`recebido!`);
+}
+
+export function send(wss, data) {
+    wss.clients.forEach(client => {
+        if (client.readyState === 1) {  // Verifica se a conexão está aberta
+            client.send(data);  // Envia a mensagem para o cliente
+        }
+    });
 }
 
 function onConnection(ws, req) {
@@ -21,4 +28,5 @@ export default (server) => {
     });
     wss.on('connection', onConnection);
     console.log(`App Web Socket Server is running!`);
+    return wss;
 }

@@ -15,7 +15,7 @@ app.use(routes);
 app.use(errorHandlerMiddleware);
 
 const server = http.createServer(app);
-webSocket(server);
+export const wss = webSocket(server);
 
 server.listen(process.env.PORT, () => {
   console.log("Servidor online na porta " + process.env.PORT);
