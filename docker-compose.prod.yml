@@ -41,7 +41,7 @@ services:
       context: ./panel-front
       dockerfile: Dockerfile
     ports:
-      - 443:80
+      - 80:80
     networks:
       - adminsystem-net
 
